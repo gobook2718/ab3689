@@ -49,10 +49,13 @@ class PostList(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         address = serializer.initial_data['address']
-        g = geocoder.google(address)
-        lat = g.latlng[0]
-        lng = g.latlng[1]
-        point = 'POINT('+str(lat)+' ' + str(lng)+')'
+        try:
+            g = geocoder.google(address)
+            lat = g.latlng[0]
+            lng = g.latlng[1]
+            point = 'POINT('+str(lat)+' ' + str(lng)+')'
+        except:
+            point = 'POINT(' + str(10.7770983) + ' ' + str(106.693229) + ')'
         serializer.save(location=point, owner=self.request.user, image=self.request.data.get('image'))
 
 
