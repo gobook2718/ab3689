@@ -74,7 +74,10 @@ class PostList(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     name = 'post-list'
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
+    permission_classes = [
+        permissions.AllowAny  # Or anon users can't register
+    ]
+    # permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
     parser_classes = (MultiPartParser, FormParser)
 
     def perform_create(self, serializer):
