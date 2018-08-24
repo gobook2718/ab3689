@@ -1,9 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import (User)
-from core.models import (PostCategory,
-                         Post
-                         )
-
+from core.models import (PostCategory, Post)
 
 class UserPostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -16,6 +13,19 @@ class UserPostSerializer(serializers.HyperlinkedModelSerializer):
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     post = UserPostSerializer(many=True, read_only=True)
+    # post = serializers.HyperlinkedRelatedField(
+    #     many=True,
+    #     read_only=True,
+    #     view_name='post-detail')
+    # password = serializers.CharField(write_only=True)
+    #
+    # def create(self, validated_data):
+    #     user = User.objects.create(
+    #         username=validated_data['username']
+    #     )
+    #     user.set_password(validated_data['password'])
+    #     user.save()
+    #     return user
 
     class Meta:
         model = User
@@ -23,7 +33,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             'url',
             'pk',
             'username',
-            'post'
+            'post',
+            # 'password'
         )
 
 
