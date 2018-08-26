@@ -7,7 +7,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.parsers import (MultiPartParser,
-                                    FormParser)
+                                    FormParser, FileUploadParser)
 from django.contrib.auth.models import User
 from rest_framework import permissions
 from core.permissions import IsOwnerOrReadOnly
@@ -78,7 +78,7 @@ class PostList(generics.ListCreateAPIView):
         permissions.AllowAny  # Or anon users can't register
     ]
     # permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
-    parser_classes = (MultiPartParser, FormParser)
+    parser_classes = (MultiPartParser, FormParser, FileUploadParser)
 
     def perform_create(self, serializer):
         address = serializer.initial_data['address']
