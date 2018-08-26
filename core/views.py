@@ -89,7 +89,11 @@ class PostList(generics.ListCreateAPIView):
             point = 'POINT('+str(lat)+' ' + str(lng)+')'
         except:
             point = 'POINT(' + str(10.7770983) + ' ' + str(106.693229) + ')'
-        serializer.save(location=point, owner=User.objects.get(username="tuannva"), image=self.request.data.get('image'))
+        serializer.save(location=point,
+                        owner=User.objects.get(username="tuannva"),
+                        image=self.request.data.get('image'),
+                        post_category=self.request.data.get('post_category'),
+                        title=self.request.data.get('title'))
         # serializer.save(location=point, owner=self.request.user, image=self.request.data.get('image'))
 
 
