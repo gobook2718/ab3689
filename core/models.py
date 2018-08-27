@@ -28,7 +28,7 @@ class Post(models.Model):
     image = models.ImageField(upload_to=post_directory_path_with_uuid, null=True, blank=True)
 
     class Meta:
-        ordering = ('title',)
+        ordering = ('createdDate',)
 
     def __str__(self):
         return self.title
