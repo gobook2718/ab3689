@@ -78,7 +78,7 @@ class PostList(generics.ListCreateAPIView):
         permissions.AllowAny  # Or anon users can't register
     ]
     # permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
-    parser_classes = (MultiPartParser, FormParser, FileUploadParser)
+    parser_classes = (MultiPartParser, FormParser)
 
     def perform_create(self, serializer):
         address = serializer.initial_data['address']
@@ -91,9 +91,7 @@ class PostList(generics.ListCreateAPIView):
             point = 'POINT(' + str(10.7770983) + ' ' + str(106.693229) + ')'
         serializer.save(location=point,
                         owner=User.objects.get(username="tuannva"),
-                        image=self.request.data.get('image'),
-                        post_category=self.request.data.get('post_category'),
-                        title=self.request.data.get('title'))
+                        image=self.request.data['image'],)
         # serializer.save(location=point, owner=self.request.user, image=self.request.data.get('image'))
 
 
