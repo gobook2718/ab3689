@@ -1,8 +1,9 @@
 from core.models import (PostCategory,
-                         Post)
+                         Post,Images)
 from core.serializers import (UserSerializer,
                               PostCategorySerializer,
-                              PostSerializer)
+                              PostSerializer,
+                              ImagesSerializer)
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -90,8 +91,7 @@ class PostList(generics.ListCreateAPIView):
         except:
             point = 'POINT(' + str(10.7770983) + ' ' + str(106.693229) + ')'
         serializer.save(location=point,
-                        owner=User.objects.get(username="tuannva"),
-                        image=self.request.data['image'],)
+                        owner=User.objects.get(username="tuannva"),)
         # serializer.save(location=point, owner=self.request.user, image=self.request.data.get('image'))
 
 
@@ -103,6 +103,18 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     # permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly)
 
 
+class ImagesList(generics.ListCreateAPIView):
+    queryset = Images.objects.all()
+    serializer_class = ImagesSerializer
+    name = 'image-list'
+
+
+class ImagesDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Images.objects.all()
+    serializer_class = ImagesSerializer
+    name = 'image-detail'
+
+
 class APIRoot(generics.GenericAPIView):
     name = 'api'
 
@@ -110,5 +122,6 @@ class APIRoot(generics.GenericAPIView):
         return Response({
             'user': reverse(UserList.name, request=request),
             'post-category': reverse(PostCategoryList.name, request=request),
-            'post': reverse(PostList.name, request=request)
+            'post': reverse(PostList.name, request=request),
+            'images': reverse(ImagesList.name, request=request)
         })

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import (User)
-from core.models import (PostCategory, Post)
+from core.models import (PostCategory, Post, Images)
 
 class UserPostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -54,17 +54,29 @@ class PostCategorySerializer(serializers.HyperlinkedModelSerializer):
             'post'
         )
 
+class ImagesSerializer(serializers.ModelSerializer):
 
+    class Meta:
+        model = Images
+        fields = (
+            'image',
+            'uploaded',
+            'posts'
+        )
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.user')
     post_category = serializers.SlugRelatedField(queryset=PostCategory.objects.all(),
                                                  slug_field='name')
+    images = ImagesSerializer(
+        many=True,
+    )
 
     class Meta:
         model = Post
         fields = (
             'url',
+            'id',
             'post_category',
             'owner',
             'title',
@@ -73,6 +85,12 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
             'location',
             'createdDate',
             'modifiedDate',
-            'image'
+            'images'
         )
 
+    def create(self, validated_data):
+        images_data = validated_data.pop('images')
+        post = Post.objects.create(**validated_data)
+        for image_data in images_data:
+            Images.objects.create(posts=post, **image_data)
+        return post

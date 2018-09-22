@@ -8,6 +8,10 @@ urlpatterns = [
     path('post-categories/<int:pk>', views.PostCategoryDetail.as_view(), name=views.PostCategoryDetail.name),
     path('posts', views.PostList.as_view(), name=views.PostList.name),
     path('posts/<int:pk>', views.PostDetail.as_view(), name=views.PostDetail.name),
+
+    path('images', views.ImagesList.as_view(), name=views.ImagesList.name),
+    path('images/<int:pk>', views.ImagesDetail.as_view(), name=views.ImagesDetail.name),
+
     path('api/', views.APIRoot.as_view(), name=views.APIRoot.name),
 
     path('api/login', views.login),
