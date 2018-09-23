@@ -38,9 +38,9 @@ class Post(models.Model):
         return self.title
 
 
-# class Images(models.Model):
-#     image = models.ImageField(upload_to=image_with_uuid)
-#     uploaded = models.DateTimeField(auto_now_add=True)
-#     posts = models.ForeignKey(Post, related_name="images", on_delete=models.SET_NULL, blank=True, null=True)
-    # user = models.ForeignKey("auth.user", on_delete=models.CASCADE)
+class Images(models.Model):
+    image = models.ImageField(upload_to=image_with_uuid)
+    uploaded = models.DateTimeField(auto_now_add=True)
+    posts = models.ForeignKey(Post, related_name="images", on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey("auth.user", on_delete=models.CASCADE)
 
